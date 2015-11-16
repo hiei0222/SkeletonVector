@@ -1,0 +1,17 @@
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\bin\Debug\applim.exe.config
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\bin\Debug\applim.exe
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\bin\Debug\applim.pdb
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\bin\Debug\Microsoft.Kinect.dll
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\bin\Debug\Microsoft.Kinect.xml
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\applim.csprojResolveAssemblyReference.cache
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\MainWindow.baml
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\MainWindow.g.cs
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\App.g.cs
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\applim_MarkupCompile.cache
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\applim.g.resources
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\applim.Properties.Resources.resources
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\applim.csproj.GenerateResource.Cache
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\applim.exe
+c:\users\yiming\documents\visual studio 2013\Projects\applim\applim\obj\Debug\applim.pdb
+C:\Users\Yiming\documents\visual studio 2013\Projects\applim\applim\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Yiming\documents\visual studio 2013\Projects\applim\applim\bin\Debug\System.Numerics.Vectors.xml
