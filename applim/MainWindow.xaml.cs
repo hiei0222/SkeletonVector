@@ -28,9 +28,12 @@ namespace applim
     {
 
         KinectSensor kinect;
+
+        ColorFrameReader colorFrameReader;
+        FrameDescription frame;
         BodyFrameReader bodyFrameReader;
         Body[] bodies;
-
+        byte[] colorbuffer;
 
         public MainWindow()
         {
@@ -43,7 +46,21 @@ namespace applim
             {
                 // open kinect
                 kinect = KinectSensor.GetDefault();
+                if (kinect == null)
+                {
+                    throw new Exception("Kinect is not connect!");
+                }
                 kinect.Open();
+
+                frame = kinect.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+
+                colorFrameReader = kinect.ColorFrameSource.OpenReader();
+                colorFrameReader.FrameArrived += colorFrameReader_FrameArrived;
+
+
+
+
+
                 // open body reader
                 bodyFrameReader = kinect.BodyFrameSource.OpenReader();
                 
@@ -63,6 +80,21 @@ namespace applim
             }
         }
 
+        void colorFrameReader_FrameArrived(object sender, ColorFrameArrivedEventArgs e)
+        {
+            using (var colorFrame = e.FrameReference.AcquireFrame())
+            {
+                if (colorFrame == null)
+                {
+                    return;
+                }
+                colorbuffer = new byte[frame.Width * frame.Height * frame.BytesPerPixel];
+                colorFrame.CopyConvertedFrameDataToArray(colorbuffer, ColorImageFormat.Bgra);
+
+                ImageColor.Source = BitmapSource.Create(frame.Width, frame.Height, 96, 96, PixelFormats.Bgr32, null, colorbuffer, frame.Width * (int)frame.BytesPerPixel);
+            }
+        }
+
         void bodyFrameReader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             UpdateBodyFrame(e);
@@ -77,6 +109,7 @@ namespace applim
 
             foreach (var body in bodies.Where(b => b.IsTracked))
             {
+                /*
                 // Distance
                 var right = body.Joints[JointType.HandRight];
                 var left = body.Joints[JointType.HandLeft];
@@ -91,11 +124,12 @@ namespace applim
                         * 100;
                     DistanceMessage.Text = distance.ToString();
                 }
+                 * */
 
                 // Angel
-                var hand = body.Joints[JointType.HandRight];
-                var elbow = body.Joints[JointType.ElbowRight];
-                var shoulder = body.Joints[JointType.ShoulderRight];
+                var hand = body.Joints[JointType.Head];
+                var elbow = body.Joints[JointType.SpineShoulder];
+                var shoulder = body.Joints[JointType.SpineBase];
 
                 var v1 = hand.Position.ToVector3() - elbow.Position.ToVector3();
                 var v2 = shoulder.Position.ToVector3() - elbow.Position.ToVector3();
@@ -104,6 +138,14 @@ namespace applim
                 var dot = Math.Acos(Vector3.Dot(v1, v2) / (v1.Length() * v2.Length()));
                 var angle = (float)(dot * Rad2Deg);
                 AngelMessage.Text = angle.ToString();
+                if (angle > 170)
+                {
+                    StatusMessage.Text = "OK";
+                }
+                else
+                {
+                    StatusMessage.Text = "Not Ready";
+                }
 
                 foreach (var joint in body.Joints)
                 {
@@ -132,13 +174,13 @@ namespace applim
                 Fill = solidColorBrush,
             };
 
-            var point = kinect.CoordinateMapper.MapCameraPointToDepthSpace(joint.Position);
+            var point = kinect.CoordinateMapper.MapCameraPointToColorSpace(joint.Position);
             if ((point.X < 0) || (point.Y < 0))
             {
                 return;
             }
 
-            Canvas.SetLeft(ellipse, point.X - (p / 2));
+            Canvas.SetLeft(ellipse, point.X / 2);
             Canvas.SetTop(ellipse, point.Y - (p / 2));
 
             CanvasBody.Children.Add(ellipse);
